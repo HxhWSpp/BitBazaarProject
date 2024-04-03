@@ -3,13 +3,8 @@ using System.Linq.Expressions;
 
 namespace AppsApi.Data.Repositories.Abstractions
 {
-    public interface IReviewRepository
+    public interface IReviewRepository : IRepository<Review>
     {
-        Task<ICollection<Review>> GetAllAsync();
-        Task<ICollection<Review>> GetAsync(Expression<Func<Review, bool>> predicate);
-        Task<Review> GetByIdAsync(int id);
-        Task AddAsync(Review entity);
-        Task UpdateAsync(Review entity);
-        Task DeleteByIdAsync(int id);
+       
     }
 }

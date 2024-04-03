@@ -3,13 +3,8 @@ using System.Linq.Expressions;
 
 namespace AppsApi.Data.Repositories.Abstractions
 {
-    public interface IAppRepository
+    public interface IAppRepository : IRepository<App>
     {
-        Task<ICollection<App>> GetAllAsync();
-        Task<ICollection<App>> GetAsync(Expression<Func<App, bool>> predicate);
-        Task<App> GetByIdAsync(int id);
-        Task AddAsync(App entity);
-        Task UpdateAsync(App entity);
-        Task DeleteByIdAsync(int id);
+        Task<App> GetAppDetailsById(int id);
     }
 }

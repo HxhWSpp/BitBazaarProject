@@ -14,20 +14,33 @@ namespace AppsApi.Data.Repositories
             _context = context;
             _dbSet = _context.Set<Image>();
         }
-        public async Task AddAsync(Image entity)
+        public async Task<bool> AddAsync(Image entity)
         {
             await _dbSet.AddAsync(entity);
-            await _context.SaveChangesAsync();
+            if (await _context.SaveChangesAsync() <= 0)
+            {
+                throw new Exception("Something went wrong while adding the entity!");
+            }
+            else
+            {
+                return true;
+            }
         }
 
-        public async Task<string> DeleteByIdAsync(int id)
+        public async Task<bool> DeleteByIdAsync(int id)
         {
             var entity = await GetByIdAsync(id);
             if (entity != null)
             {
                 _dbSet.Remove(entity);
-                await _context.SaveChangesAsync();
-                return entity.ImagePath;
+                if (await _context.SaveChangesAsync() <= 0)
+                {
+                    throw new Exception("Something went wrong while deleting the entity!");
+                }
+                else
+                {
+                    return true;
+                }
             }
             else
             {
@@ -49,7 +62,7 @@ namespace AppsApi.Data.Repositories
         {
             if (id > 0)
             {
-                var entity = await _dbSet.Include(a => a.App).SingleOrDefaultAsync(a => a.Id == id);
+                var entity = await _dbSet.SingleOrDefaultAsync(a => a.Id == id);
                 if (entity != null)
                 {
                     return entity;
@@ -65,9 +78,10 @@ namespace AppsApi.Data.Repositories
             }
         }
 
-        public Task UpdateAsync(Image entity)
+        public Task<bool> UpdateAsync(Image entity)
         {
             throw new NotImplementedException();
         }
+               
     }
 }

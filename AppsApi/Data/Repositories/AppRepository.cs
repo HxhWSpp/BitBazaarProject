@@ -15,19 +15,35 @@ namespace AppsApi.Data.Repositories
             _context = context;
             _dbSet = _context.Set<App>();
         }
-        public async Task AddAsync(App entity)
+        public async Task<bool> AddAsync(App entity)
         {
             await _dbSet.AddAsync(entity);
-            await _context.SaveChangesAsync();
+     
+            if (await _context.SaveChangesAsync() <= 0)
+            {
+                throw new Exception("Something went wrong while adding the entity!");
+            }
+            else
+            {
+                return true;
+            }
         }
 
-        public async Task DeleteByIdAsync(int id)
+        public async Task<bool> DeleteByIdAsync(int id)
         {
             var entity = await GetByIdAsync(id);
             if (entity != null)
             {
                 _dbSet.Remove(entity);
-                await _context.SaveChangesAsync();
+                if (await _context.SaveChangesAsync() <= 0)
+                {
+                    throw new Exception("Something went wrong while removing the entity!");
+                }
+                else
+                {
+                    return true;
+                }
+                
             }
             else
             {
@@ -37,19 +53,33 @@ namespace AppsApi.Data.Repositories
 
         public async Task<ICollection<App>> GetAllAsync()
         {
-            return await _dbSet.Include(i => i.Images).AsSplitQuery().ToListAsync();
+            return await _dbSet.Include(i => i.Images).ToListAsync();
         }
+
+        public async Task<App> GetAppDetailsById(int id)
+        {
+            var entity = await _dbSet.Include(i => i.Images).Include(g => g.Genres).Include(d => d.Developer).Include(r => r.Reviews).AsSplitQuery().SingleOrDefaultAsync(a => a.Id == id);
+            if (entity != null)
+            {
+                return entity;
+            }
+            else
+            {
+                throw new InvalidOperationException($"Item does not exist! (ID: {id}");
+            }
+        }
+
 
         public async Task<ICollection<App>> GetAsync(Expression<Func<App, bool>> predicate)
         {
-            return await _dbSet.Where(predicate).Include(i => i.Images).Include(g => g.Genres).AsSplitQuery().ToListAsync();
+            return await _dbSet.Where(predicate).Include(i => i.Images).Include(g => g.Genres).Include(d => d.Developer).Include(r => r.Reviews).AsSplitQuery().ToListAsync();
         }
 
         public async Task<App> GetByIdAsync(int id)
         {
             if (id > 0)
             {              
-                var entity = await _dbSet.Include(i => i.Images).Include(g => g.Genres).Include(r => r.Reviews).Include(d => d.Developer).AsSplitQuery().SingleOrDefaultAsync(a => a.Id == id);
+                var entity = await _dbSet.SingleOrDefaultAsync(a => a.Id == id);
                 if (entity != null)
                 {
                     return entity;
@@ -65,11 +95,19 @@ namespace AppsApi.Data.Repositories
             }
         }
 
-        public async Task UpdateAsync(App entity)
+        public async Task<bool> UpdateAsync(App entity)
         {
             _context.Entry(entity).State = EntityState.Modified;
             _dbSet.Update(entity);
-            await _context.SaveChangesAsync();
+            if (await _context.SaveChangesAsync() <= 0)
+            {
+                throw new Exception("Something went wrong while upading the entity");
+            }
+            else
+            {
+                return true;
+            }
+
         }
     }
 }

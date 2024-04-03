@@ -14,19 +14,33 @@ namespace AppsApi.Data.Repositories
             _context = context;
             _dbSet = _context.Set<Review>();
         }
-        public async Task AddAsync(Review entity)
+        public async Task<bool> AddAsync(Review entity)
         {
             await _dbSet.AddAsync(entity);
-            await _context.SaveChangesAsync();
+            if (await _context.SaveChangesAsync() <= 0)
+            {
+                throw new Exception("Something went wrong while adding the entity!");
+            }
+            else
+            {
+                return true;
+            }
         }
 
-        public async Task DeleteByIdAsync(int id)
+        public async Task<bool> DeleteByIdAsync(int id)
         {
             var entity = await GetByIdAsync(id);
             if (entity != null)
             {
                 _dbSet.Remove(entity);
-                await _context.SaveChangesAsync();
+                if (await _context.SaveChangesAsync() <= 0)
+                {
+                    throw new Exception("Something went wrong while deleting the entity!");
+                }
+                else
+                {
+                    return true;
+                }
             }
             else
             {
@@ -41,7 +55,7 @@ namespace AppsApi.Data.Repositories
 
         public async Task<ICollection<Review>> GetAsync(Expression<Func<Review, bool>> predicate)
         {
-            return await _dbSet.Where(predicate).ToListAsync();
+            return await _dbSet.Where(predicate).Include(a => a.App).ToListAsync();
         }
 
         public async Task<Review> GetByIdAsync(int id)
@@ -64,11 +78,18 @@ namespace AppsApi.Data.Repositories
             }
         }
 
-        public async Task UpdateAsync(Review entity)
+        public async Task<bool> UpdateAsync(Review entity)
         {
             _context.Entry(entity).State = EntityState.Modified;
             _dbSet.Update(entity);
-            await _context.SaveChangesAsync();
+            if (await _context.SaveChangesAsync() <= 0)
+            {
+                throw new Exception("Something went wrong while updating the entity!");
+            }
+            else
+            {
+                return true;
+            }
         }
     }
 }

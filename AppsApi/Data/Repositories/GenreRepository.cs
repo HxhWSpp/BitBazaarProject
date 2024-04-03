@@ -15,19 +15,33 @@ namespace AppsApi.Data.Repositories
             _context = context;
             _dbSet = _context.Set<Genre>();
         }
-        public async Task AddAsync(Genre entity)
+        public async Task<bool> AddAsync(Genre entity)
         {
             await _dbSet.AddAsync(entity);
-            await _context.SaveChangesAsync();
+            if (await _context.SaveChangesAsync() <= 0)
+            {
+                throw new Exception("Something went wrong while adding the entity!");
+            }
+            else
+            {
+                return true;
+            }
         }
 
-        public async Task DeleteByIdAsync(int id)
+        public async Task<bool> DeleteByIdAsync(int id)
         {
             var entity = await GetByIdAsync(id);
             if (entity != null)
             {
                 _dbSet.Remove(entity);
-                await _context.SaveChangesAsync();
+                if (await _context.SaveChangesAsync() <= 0)
+                {
+                    throw new Exception("Something went wrong while deleting the entity!");
+                }
+                else
+                {
+                    return true;
+                }
             }
             else
             {
@@ -40,7 +54,7 @@ namespace AppsApi.Data.Repositories
             return await _dbSet.ToListAsync();
         }
 
-        public async Task<Genre> GetAppsByGenre(int id)
+        public async Task<Genre> GetGenreDetailsById(int id)
         {
             var entity = await _dbSet.Include(a => a.Apps).SingleOrDefaultAsync(a => a.Id == id);
             if (entity != null)
@@ -78,11 +92,18 @@ namespace AppsApi.Data.Repositories
             }
         }
 
-        public async Task UpdateAsync(Genre entity)
+        public async Task<bool> UpdateAsync(Genre entity)
         {
             _context.Entry(entity).State = EntityState.Modified;
             _dbSet.Update(entity);
-            await _context.SaveChangesAsync();
+            if (await _context.SaveChangesAsync() <= 0)
+            {
+                throw new Exception("Something went wrong while updating the entity!");
+            }
+            else
+            {
+                return true;
+            }
         }
     }
 }
