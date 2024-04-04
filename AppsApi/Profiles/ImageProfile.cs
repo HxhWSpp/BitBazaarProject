@@ -11,7 +11,9 @@ namespace AppsApi.Profiles
             CreateMap<Image, ImageResponseDTO>();
             CreateMap<ImageRequestDTO, Image>();
 
-            CreateMap<string, Image>().ForMember(dest => dest.ImagePath, opt => opt.MapFrom(src => src));
+
+            CreateMap<string, Image>().ForMember(dest => dest.ImagePath, opt => opt.MapFrom(src => src))
+                .ForMember(dest => dest.CreatedAt, opt => opt.MapFrom(src => DateTime.Now)); ;
         }
     }
 }

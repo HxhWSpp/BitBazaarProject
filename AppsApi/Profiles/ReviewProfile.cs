@@ -10,6 +10,7 @@ namespace AppsApi.Profiles
         {
             CreateMap<Review, ReviewResponseDTO>();
             CreateMap<ReviewRequestDTO, Review>();
+
         }
     }
 }

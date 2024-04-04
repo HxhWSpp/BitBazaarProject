@@ -9,7 +9,7 @@ namespace AppsApi.DTOs.DeveloperDTOs
         public string Description { get; set; }
         public string? ProfilePath { get; set; }
 
-        public IFormFile ProfileFile { get; set; }
+        public IFormFile? ProfileFile { get; set; }
 
     }
 }

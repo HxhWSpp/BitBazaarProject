@@ -1,5 +1,6 @@
 ﻿using AppsApi.DTOs.Abstractions;
 using AppsApi.DTOs.DeveloperDTOs;
+using AppsApi.DTOs.ImageDTOs;
 
 namespace AppsApi.DTOs.AppDTOs
 {
@@ -11,7 +12,7 @@ namespace AppsApi.DTOs.AppDTOs
         public DateTime ReleaseDate { get; set; }
         public virtual string TitleCardPath { get; set; }
 
-        public virtual DeveloperResponseDTO? Developer { get; set; }
+        public virtual ICollection<ImageResponseDTO>? Images { get; set; }
 
     }
 }

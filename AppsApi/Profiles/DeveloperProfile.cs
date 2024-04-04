@@ -11,8 +11,8 @@ namespace AppsApi.Profiles
             CreateMap<DeveloperRequestDTO , Developer>();
             CreateMap<Developer, DeveloperDetailResponseDTO>();
             CreateMap<Developer, DeveloperResponseDTO>();
-
-            CreateMap<DeveloperCreateDTO, Developer>();
+            CreateMap<DeveloperResponseDTO, Developer>();
+           
         }
     }
 }
