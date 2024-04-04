@@ -14,7 +14,7 @@ namespace AppsApi.DTOs.AppDTOs
 
         public string? TitleCardPath { get; set; }
 
-        public IFormFile TitleCardFile { get; set; }
+        public IFormFile? TitleCardFile { get; set; }
 
         public ICollection<string>? ImagePaths { get; set; }
 

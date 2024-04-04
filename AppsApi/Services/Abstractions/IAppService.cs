@@ -6,14 +6,11 @@ namespace AppsApi.Services.Abstractions
 {
     public interface IAppService
     {
-        Task<ICollection<AppDetailResponseDTO>> GetAppsAsync();
+        Task<ICollection<AppResponseDTO>> GetAppsAsync();
         Task<AppDetailResponseDTO> GetAppByIdAsync(int id);
         Task<AppDetailResponseDTO> GetAppByNameAsync(string name);       
-        Task AddAppAsync(AppCreateDTO app);
-        Task DeleteAppByIdAsync(int id);
-        Task UpdateAppAsync(AppRequestDTO app);
-
-        Task RemoveGenreFromApp(int appId , int genreId);
-        Task AddGenreToApp(int appId, int genreId);       
+        Task<bool> AddAppAsync(AppCreateDTO app);
+        Task<bool> DeleteAppByIdAsync(int id);
+        Task<bool> UpdateAppAsync(AppEditDTO app);      
     }
 }

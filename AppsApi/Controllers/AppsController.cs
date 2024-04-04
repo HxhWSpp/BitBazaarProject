@@ -17,6 +17,7 @@ using Newtonsoft.Json;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 using Microsoft.OpenApi.Writers;
 using AppsApi.Utils;
+using AutoMapper.Configuration.Annotations;
 
 namespace AppsApi.Controllers
 {
@@ -37,26 +38,11 @@ namespace AppsApi.Controllers
 
         // GET: api/Apps
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<AppDetailResponseDTO>>> GetApps()
+        public async Task<ActionResult<IEnumerable<AppResponseDTO>>> GetApps()
         {
             return (await _appService.GetAppsAsync()).ToList();
         }
-
-        [HttpPatch("RemoveGenre")]
-        public async Task<ActionResult<AppDetailResponseDTO>> RemoveGenreFromApp(int appId, int genreId)
-        {
-            await _appService.RemoveGenreFromApp(appId, genreId);
-            return CreatedAtAction("GetAppById", new { id = appId } ,appId);
-        }
-
-        [HttpPatch("AddGenre")]
-        public async Task<ActionResult<AppDetailResponseDTO>> AddGenreToApp(int appId, int genreId)
-        {
-            await _appService.AddGenreToApp(appId, genreId);
-            return CreatedAtAction("GetAppById", new { id = appId } ,appId);
-        }
-
-
+       
 
         // GET: api/Apps/ById/5
         [HttpGet("ById/{id}")]
@@ -86,11 +72,17 @@ namespace AppsApi.Controllers
             return app;
         }
 
+       
+
         // DELETE: api/Apps/5      
         [HttpDelete("{id}")]
-        public async Task DeleteAppByid(int id)
+        public async Task<ActionResult> DeleteAppByid(int id)
         {                     
-            await _appService.DeleteAppByIdAsync(id);            
+            if(await _appService.DeleteAppByIdAsync(id) == true)
+            {
+                return Ok();
+            }
+            return StatusCode(500);
         }
 
         // POST: api/Apps       
@@ -100,33 +92,58 @@ namespace AppsApi.Controllers
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
-            }           
-
-            var uploadFile = await Helper.UploadImageLocally(app.TitleCardFile , _webHostEnvironment , "TitleCards" , _httpContextAccessor);
+            }
             
-            app.TitleCardPath = uploadFile;
-            await _appService.AddAppAsync(app);
+            if (app.TitleCardFile != null & app.ImageFiles != null)
+            {
+                var uploadFile = await Helper.UploadImageLocally(app.TitleCardFile, "TitleCards", _httpContextAccessor);
+                app.TitleCardPath = uploadFile;
+                var uploadFiles = await Helper.UploadMultipleImagesLocally(app.ImageFiles, "ImagesForApps", _httpContextAccessor);
+                app.ImagePaths = uploadFiles;
 
-            return Ok();                              
+                if (await _appService.AddAppAsync(app) == true)
+                {
+                    return Ok();
+                }
+                
+                return StatusCode(500);
+            }
+            else
+            {
+                return BadRequest();
+            }                              
         }
 
+
         [HttpPut]
-        public async Task<ActionResult> UpdateApp([FromForm]AppRequestDTO app)
+        public async Task<ActionResult> UpdateApp([FromForm]AppEditDTO app)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-            if (app.TitleCardFile != null)
-            {
-                var uploadFile = await Helper.UploadImageLocally(app.TitleCardFile, _webHostEnvironment, "TitleCards" , _httpContextAccessor);                
-                app.TitleCardPath = uploadFile;
-                
-            }
-            await _appService.UpdateAppAsync(app);
-            
 
-            return Ok();
+            if (app.TitleCardFile != null)
+            {               
+               
+                var uploadFile = await Helper.UploadImageLocally(app.TitleCardFile, "TitleCards", _httpContextAccessor);
+                app.TitleCardPath = uploadFile;
+            }
+
+            if (app.ImageFiles != null)
+            {
+                var uploadFiles = await Helper.UploadMultipleImagesLocally(app.ImageFiles, "ImagesForApps", _httpContextAccessor);
+                app.ImagePaths = uploadFiles;
+            }
+
+            if (await _appService.UpdateAppAsync(app) == true)
+            {
+                return Ok();
+            }
+            return StatusCode(500);
+           
+
+            
 
         }
     }

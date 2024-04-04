@@ -3,6 +3,7 @@ using AppsApi.Data.Repositories;
 using AppsApi.Data.Repositories.Abstractions;
 using AppsApi.Services;
 using AppsApi.Services.Abstractions;
+using AppsApi.Utils;
 using Microsoft.EntityFrameworkCore;
 
 var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
@@ -36,6 +37,8 @@ builder.Services.AddScoped<IReviewService, ReviewService>();
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddHttpContextAccessor();
+Helper.Initialize(builder.Environment);
+
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

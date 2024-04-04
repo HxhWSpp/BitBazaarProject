@@ -1,15 +1,29 @@
 ﻿using Microsoft.AspNetCore.Hosting;
+using System.Net;
 
 namespace AppsApi.Utils
 {
-    public class Helper
+    public static class Helper
     {
-        public static async Task<string> UploadImageLocally(IFormFile image , IWebHostEnvironment _webHostEnvironment , string dir , IHttpContextAccessor _httpContextAccessor)
+
+        public static IWebHostEnvironment _hostingEnvironment;
+        public static bool IsInitialized { get; private set; }
+        public static void Initialize(IWebHostEnvironment hostEnvironment)
+        {
+            if (IsInitialized == true)
+            {
+                throw new InvalidOperationException("Object already initialized");
+            }              
+
+            _hostingEnvironment = hostEnvironment;
+            IsInitialized = true;
+        }
+        public static async Task<string> UploadImageLocally(IFormFile image , string dir , IHttpContextAccessor _httpContextAccessor)
         {
             try
             {
                 var address = _httpContextAccessor.HttpContext.Request;
-                string Filepath = Path.Combine(_webHostEnvironment.WebRootPath, dir);
+                string Filepath = Path.Combine(_hostingEnvironment.WebRootPath, dir);
 
                 if (!System.IO.Directory.Exists(Filepath))
                 {
@@ -36,12 +50,13 @@ namespace AppsApi.Utils
             }
         }
 
-        public static async Task<List<string>> UploadMultipleImagesLocally(ICollection<IFormFile> images, IWebHostEnvironment _webHostEnvironment, string dir)
+        public static async Task<List<string>> UploadMultipleImagesLocally(ICollection<IFormFile> images, string dir, IHttpContextAccessor _httpContextAccessor)
         {
             try
             {
+                var address = _httpContextAccessor.HttpContext.Request;
                 List<string> imagePaths = new List<string>();
-                string Filepath = Path.Combine(_webHostEnvironment.WebRootPath, dir);
+                string Filepath = Path.Combine(_hostingEnvironment.WebRootPath, dir);
 
                 if (!System.IO.Directory.Exists(Filepath))
                 {
@@ -62,10 +77,8 @@ namespace AppsApi.Utils
                         await image.CopyToAsync(stream);
                     }
 
-                    imagePaths.Add(imagePath);
+                    imagePaths.Add($"{address.Scheme}://{address.Host}/{dir}/{uniqueFileName}");
                 }
-                
-
                 return imagePaths;
 
             }
@@ -75,25 +88,26 @@ namespace AppsApi.Utils
             }
         }
 
-        public static bool DeleteImageLocally(string path)
+        public static bool DeleteImageLocally(string path , string dir)
         {
-            //C:\Users\Wsupp\source\repos\AppsApi\AppsApi\wwwroot\ImagesForApps\00187fae-0e2f-4552-9202-d6753bf54346_tyrvtfgrsthrfdsgfdf.PNG
-            if (System.IO.File.Exists(path))
+            string Filepath = Path.Combine(_hostingEnvironment.WebRootPath, dir , path);
+            if (System.IO.File.Exists(Filepath))
             {
-                System.IO.File.Delete(path);
+                System.IO.File.Delete(Filepath);
                 return true;
             }
             return false;
         }
 
-        public static bool DeleteMultipleImagesLocally(ICollection<string> paths)
+        public static bool DeleteMultipleImagesLocally(ICollection<string> paths , string dir)
         {
-            //C:\Users\Wsupp\source\repos\AppsApi\AppsApi\wwwroot\ImagesForApps\00187fae-0e2f-4552-9202-d6753bf54346_tyrvtfgrsthrfdsgfdf.PNG           
+                 
             foreach (var path in paths)
             {
-                if (System.IO.File.Exists(path))
+                string Filepath = Path.Combine(_hostingEnvironment.WebRootPath, dir, path);
+                if (System.IO.File.Exists(Filepath))
                 {
-                    System.IO.File.Delete(path);                   
+                    System.IO.File.Delete(Filepath);                   
                 }
             }
             return true;
