@@ -5,6 +5,6 @@ namespace AppsApi.Data.Repositories.Abstractions
 {
     public interface IDeveloperRepository : IRepository<Developer>
     {        
-        Task<Developer> GetDeveloperDetailsById(int id);
+        Task<Developer> GetDeveloperDetailsByIdAsync(int id);
     }
 }

@@ -10,11 +10,11 @@ namespace AppsApi.Services.Abstractions
         Task<ICollection<GenreResponseDTO>> GetGenresAsync();
         Task<GenreResponseDTO> GetGenreByIdAsync(int id);
         Task<GenreResponseDTO> GetGenreByNameAsync(string name);       
-        Task AddGenreAsync(GenreRequestDTO genre);
-        Task DeleteGenreByIdAsync(int id);
-        Task UpdateGenreAsync(GenreRequestDTO genre);
+        Task<bool> AddGenreAsync(GenreRequestDTO genre);
+        Task<bool> DeleteGenreByIdAsync(int id);
+        Task<bool> UpdateGenreAsync(GenreRequestDTO genre);
 
-        Task<GenreDetailResponseDTO> GetAppsByGenreId(int genreId);
+        Task<GenreDetailResponseDTO> GetGenreDetailsByIdAsync(int genreId);
 
     }
 }

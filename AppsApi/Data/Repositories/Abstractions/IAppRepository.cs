@@ -5,6 +5,6 @@ namespace AppsApi.Data.Repositories.Abstractions
 {
     public interface IAppRepository : IRepository<App>
     {
-        Task<App> GetAppDetailsById(int id);
+        Task<App> GetAppDetailsByIdAsync(int id);
     }
 }

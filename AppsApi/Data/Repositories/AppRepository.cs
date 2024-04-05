@@ -56,7 +56,7 @@ namespace AppsApi.Data.Repositories
             return await _dbSet.Include(i => i.Images).ToListAsync();
         }
 
-        public async Task<App> GetAppDetailsById(int id)
+        public async Task<App> GetAppDetailsByIdAsync(int id)
         {
             var entity = await _dbSet.Include(i => i.Images).Include(g => g.Genres).Include(d => d.Developer).Include(r => r.Reviews).AsSplitQuery().SingleOrDefaultAsync(a => a.Id == id);
             if (entity != null)

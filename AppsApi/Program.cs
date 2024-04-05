@@ -29,7 +29,7 @@ builder.Services.AddScoped<IReviewRepository, ReviewRepository>();
 
 builder.Services.AddScoped<IGenreService , GenreService>();
 builder.Services.AddScoped<IAppService, AppService>();
-builder.Services.AddScoped<IImageService, ImageService>();
+
 builder.Services.AddScoped<IDeveloperService, DeveloperService>();
 builder.Services.AddScoped<IReviewService, ReviewService>();
 

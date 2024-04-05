@@ -10,6 +10,8 @@ using AppsApi.Data.Entities;
 using AppsApi.Services.Abstractions;
 using AppsApi.DTOs.AppDTOs;
 using AppsApi.DTOs.GenreDTOs;
+using AppsApi.Services;
+using AppsApi.Utils;
 
 namespace AppsApi.Controllers
 {
@@ -35,8 +37,12 @@ namespace AppsApi.Controllers
         [HttpPost]
         public async Task<ActionResult<GenreResponseDTO>> PostGenre(GenreRequestDTO genre)
         {
-            await _genreService.AddGenreAsync(genre);
-            return CreatedAtAction("GetGenreById", new { id = genre.Id }, genre);
+            if (await _genreService.AddGenreAsync(genre))
+            {
+                return Ok();
+            }
+            return StatusCode(500);
+
         }
 
         // GET : api/Genres/5
@@ -53,10 +59,10 @@ namespace AppsApi.Controllers
             return genre;
         }
 
-        [HttpGet("GetAppsByGenre/{id}")]
-        public async Task<ActionResult<GenreDetailResponseDTO>> GetAppsByGenre(int id)
+        [HttpGet("GetGenreDetails/{id}")]
+        public async Task<ActionResult<GenreDetailResponseDTO>> GetGenreDetailsById(int id)
         {
-            var genre = await _genreService.GetAppsByGenreId(id);
+            var genre = await _genreService.GetGenreDetailsByIdAsync(id);
 
             if (genre == null)
             {
@@ -68,9 +74,30 @@ namespace AppsApi.Controllers
 
         // DELETE : api/Genres/5
         [HttpDelete("{id}")]
-        public async Task DeleteGenreById(int id)
+        public async Task<ActionResult> DeleteGenreById(int id)
         {
-            await _genreService.DeleteGenreByIdAsync(id);
+            if(await _genreService.DeleteGenreByIdAsync(id))
+            {
+                return Ok();
+            }
+            return StatusCode(500);
+        }
+
+        [HttpPut]
+        public async Task<ActionResult> UpdateApp(GenreRequestDTO genre)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+           
+            if (await _genreService.UpdateGenreAsync(genre) == true)
+            {
+                return Ok();
+            }
+            return StatusCode(500);
+
         }
 
     }

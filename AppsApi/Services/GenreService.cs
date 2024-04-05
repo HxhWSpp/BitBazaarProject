@@ -20,20 +20,20 @@ namespace AppsApi.Services
             _genreRepository = repository;
             _mapper = mapper;
         }
-        public Task AddGenreAsync(GenreRequestDTO genre)
+        public Task<bool> AddGenreAsync(GenreRequestDTO genre)
         {
             var genreEntity = _mapper.Map<Genre>(genre);
             return _genreRepository.AddAsync(genreEntity);
         }
 
-        public Task DeleteGenreByIdAsync(int id)
+        public Task<bool> DeleteGenreByIdAsync(int id)
         {
             return _genreRepository.DeleteByIdAsync(id);
         }
 
-        public async Task<GenreDetailResponseDTO> GetAppsByGenreId(int genreId)
+        public async Task<GenreDetailResponseDTO> GetGenreDetailsByIdAsync(int genreId)
         {
-            var genreEntity = await _genreRepository.GetAppsByGenre(genreId);
+            var genreEntity = await _genreRepository.GetGenreDetailsByIdAsync(genreId);
             return _mapper.Map<GenreDetailResponseDTO>(genreEntity);
         }
 
@@ -55,7 +55,7 @@ namespace AppsApi.Services
             return _mapper.Map<ICollection<GenreResponseDTO>>(genreList);
         }
 
-        public Task UpdateGenreAsync(GenreRequestDTO genre)
+        public Task<bool> UpdateGenreAsync(GenreRequestDTO genre)
         {
             var genreEntity = _mapper.Map<Genre>(genre);
             return _genreRepository.UpdateAsync(genreEntity);

@@ -5,11 +5,11 @@ namespace AppsApi.Services.Abstractions
     public interface IDeveloperService
     {
         Task<ICollection<DeveloperDetailResponseDTO>> GetDevelopersAsync();
-        Task<DeveloperDetailResponseDTO> GetDeveloperByIdAsync(int id);
-        Task<DeveloperDetailResponseDTO> GetDeveloperByNameAsync(string name);
-        Task AddDeveloperAsync(DeveloperCreateDTO dev);
-        Task DeleteDeveloperByIdAsync(int id);
-        Task UpdateDeveloperAsync(DeveloperRequestDTO dev);
+        Task<DeveloperDetailResponseDTO> GetDeveloperDetailsByIdAsync(int id);
+        Task<DeveloperDetailResponseDTO> GetDeveloperDetailsByNameAsync(string name);
+        Task<bool> AddDeveloperAsync(DeveloperRequestDTO dev);
+        Task<bool> DeleteDeveloperByIdAsync(int id);
+        Task<bool> UpdateDeveloperAsync(DeveloperRequestDTO dev);
 
        
         

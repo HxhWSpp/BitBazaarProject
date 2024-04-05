@@ -78,6 +78,26 @@ namespace AppsApi.Data.Repositories
             }
         }
 
+        public async Task<Review> GetReviewDetailsByIdAsync(int id)
+        {
+            if (id > 0)
+            {
+                var entity = await _dbSet.Include(a => a.App).SingleOrDefaultAsync(a => a.Id == id);
+                if (entity != null)
+                {
+                    return entity;
+                }
+                else
+                {
+                    throw new InvalidOperationException($"Item not found!");
+                }
+            }
+            else
+            {
+                throw new InvalidOperationException($"Id must be bigger than {id}!");
+            }
+        }
+
         public async Task<bool> UpdateAsync(Review entity)
         {
             _context.Entry(entity).State = EntityState.Modified;

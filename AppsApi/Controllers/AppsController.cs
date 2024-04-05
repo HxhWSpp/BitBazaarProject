@@ -26,13 +26,11 @@ namespace AppsApi.Controllers
     public class AppsController : ControllerBase
     {
         private readonly IAppService _appService;
-        private readonly IWebHostEnvironment _webHostEnvironment;
         private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public AppsController(IAppService appService , IWebHostEnvironment webHostEnvironment , IHttpContextAccessor httpContextAccessor)
+        public AppsController(IAppService appService, IHttpContextAccessor httpContextAccessor)
         {
-            _appService = appService;
-            _webHostEnvironment = webHostEnvironment;
+            _appService = appService;           
             _httpContextAccessor = httpContextAccessor;
         }
 
@@ -45,10 +43,10 @@ namespace AppsApi.Controllers
        
 
         // GET: api/Apps/ById/5
-        [HttpGet("ById/{id}")]
-        public async Task<ActionResult<AppDetailResponseDTO>> GetAppById(int id)
+        [HttpGet("Details/{id}")]
+        public async Task<ActionResult<AppDetailResponseDTO>> GetAppDetailsById(int id)
         {
-            var app = await _appService.GetAppByIdAsync(id);
+            var app = await _appService.GetAppDetailsByIdAsync(id);
 
             if (app == null)
             {
@@ -59,10 +57,10 @@ namespace AppsApi.Controllers
         }
 
         // GET: api/Apps/ByName/Test
-        [HttpGet("ByName/{name}")]
-        public async Task<ActionResult<AppDetailResponseDTO>> GetAppByName(string name)
+        [HttpGet("DetailsByName/{name}")]
+        public async Task<ActionResult<AppDetailResponseDTO>> GetAppDetailsByName(string name)
         {
-            var app = await _appService.GetAppByNameAsync(name);
+            var app = await _appService.GetAppDetailsByNameAsync(name);
 
             if (app == null)
             {

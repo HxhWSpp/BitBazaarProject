@@ -54,7 +54,7 @@ namespace AppsApi.Data.Repositories
             return await _dbSet.ToListAsync();
         }
 
-        public async Task<Genre> GetGenreDetailsById(int id)
+        public async Task<Genre> GetGenreDetailsByIdAsync(int id)
         {
             var entity = await _dbSet.Include(a => a.Apps).SingleOrDefaultAsync(a => a.Id == id);
             if (entity != null)

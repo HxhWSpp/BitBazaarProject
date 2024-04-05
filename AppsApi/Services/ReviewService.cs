@@ -21,18 +21,18 @@ namespace AppsApi.Services
             _appRepository = appRepository;
             _mapper = mapper;
         }
-        public async Task AddReviewAsync(ReviewRequestDTO review)
+        public async Task<bool> AddReviewAsync(ReviewRequestDTO review)
         {
             var reviewEntity = _mapper.Map<Review>(review);
             var appEntity = await _appRepository.GetByIdAsync(review.AppId);
             reviewEntity.App = appEntity;
 
-            await _reviewRepository.AddAsync(reviewEntity);
+           return await _reviewRepository.AddAsync(reviewEntity);
         }
 
-        public async Task DeleteReviewByIdAsync(int id)
+        public async Task<bool> DeleteReviewByIdAsync(int id)
         {
-            await _reviewRepository.DeleteByIdAsync(id);
+            return await _reviewRepository.DeleteByIdAsync(id);
         }
 
         public async Task<ReviewResponseDTO> GetReviewByIdAsync(int id)
@@ -59,7 +59,7 @@ namespace AppsApi.Services
             return _mapper.Map<ICollection<ReviewResponseDTO>>(reviewEntity);
         }
 
-        public Task UpdateReviewAsync(ReviewRequestDTO review)
+        public Task<bool> UpdateReviewAsync(ReviewRequestDTO review)
         {
             var reviewEntity = _mapper.Map<Review>(review);
             return _reviewRepository.UpdateAsync(reviewEntity);

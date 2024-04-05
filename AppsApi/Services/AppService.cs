@@ -44,7 +44,7 @@ namespace AppsApi.Services
             
             appEntity.Developer = await _developerRepository.GetByIdAsync(app.DeveloperId);
                    
-            await _appRepository.AddAsync(appEntity);
+            var added = await _appRepository.AddAsync(appEntity);
 
             if (app.ImagePaths != null)
             {
@@ -55,7 +55,7 @@ namespace AppsApi.Services
                 }
             }
 
-            if (await _appRepository.UpdateAsync(appEntity) == true)
+            if (await _appRepository.UpdateAsync(appEntity) == true & added == true)
             {
                 return true;
             }
@@ -78,13 +78,13 @@ namespace AppsApi.Services
 
         }
 
-        public async Task<AppDetailResponseDTO> GetAppByIdAsync(int id)
+        public async Task<AppDetailResponseDTO> GetAppDetailsByIdAsync(int id)
         {
-            var appEntity = await _appRepository.GetAppDetailsById(id);           
+            var appEntity = await _appRepository.GetAppDetailsByIdAsync(id);           
             return _mapper.Map<AppDetailResponseDTO>(appEntity);
         }
 
-        public async Task<AppDetailResponseDTO> GetAppByNameAsync(string name)
+        public async Task<AppDetailResponseDTO> GetAppDetailsByNameAsync(string name)
         {
             var appEntity = (await _appRepository.GetAsync(item => item.Title == name)).FirstOrDefault();
             return _mapper.Map<AppDetailResponseDTO>(appEntity);
@@ -99,7 +99,7 @@ namespace AppsApi.Services
 
         public async Task<bool> UpdateAppAsync(AppEditDTO app)
         {
-            var appEntity = await _appRepository.GetAppDetailsById(app.Id);
+            var appEntity = await _appRepository.GetAppDetailsByIdAsync(app.Id);
             
                 appEntity.Title = app.Title;
                 appEntity.Description = app.Description;

@@ -14,13 +14,12 @@ namespace AppsApi.Controllers
     public class DevelopersController : ControllerBase
     {
         private readonly IDeveloperService _developerService;
-        private readonly IWebHostEnvironment _webHostEnvironment;
+  
         private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public DevelopersController(IDeveloperService developerService , IWebHostEnvironment webHostEnvironment ,IHttpContextAccessor httpContextAccessor)
+        public DevelopersController(IDeveloperService developerService ,IHttpContextAccessor httpContextAccessor)
         {
-            _developerService = developerService;
-            _webHostEnvironment = webHostEnvironment;
+            _developerService = developerService;          
             _httpContextAccessor = httpContextAccessor;
         }
 
@@ -33,20 +32,24 @@ namespace AppsApi.Controllers
 
         
         [HttpPost]
-        public async Task<ActionResult<DeveloperDetailResponseDTO>> PostDeveloper([FromForm]DeveloperCreateDTO dev)
+        public async Task<ActionResult<DeveloperDetailResponseDTO>> PostDeveloper([FromForm]DeveloperRequestDTO dev)
         {
-            var uploadFile = await Helper.UploadImageLocally(dev.ProfileFile, _webHostEnvironment, "ImageProfiles" , _httpContextAccessor);
+            var uploadFile = await Helper.UploadImageLocally(dev.ProfileFile, "ImageProfiles" , _httpContextAccessor);
 
             dev.ProfilePath = uploadFile;
-            await _developerService.AddDeveloperAsync(dev);
-            return Ok();
+            if (await _developerService.AddDeveloperAsync(dev) == true)
+            {
+                return Ok();
+            }
+
+            return StatusCode(500); 
         }
 
         
         [HttpGet("{id}")]
-        public async Task<ActionResult<DeveloperDetailResponseDTO>> GetDeveloperById(int id)
+        public async Task<ActionResult<DeveloperDetailResponseDTO>> GetDeveloperDetailsById(int id)
         {
-            var dev = await _developerService.GetDeveloperByIdAsync(id);
+            var dev = await _developerService.GetDeveloperDetailsByIdAsync(id);
 
             if (dev == null)
             {
@@ -59,8 +62,11 @@ namespace AppsApi.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteById(int id)
         {
-            await _developerService.DeleteDeveloperByIdAsync(id);
-            return Ok();
+            if(await _developerService.DeleteDeveloperByIdAsync(id))
+            {
+                return Ok();
+            }
+            return StatusCode(500);
         }
 
         [HttpPut]
@@ -70,16 +76,20 @@ namespace AppsApi.Controllers
             {
                 return BadRequest(ModelState);
             }
-            if (dev.ProfilePath == null)
+            var oldProfilePath = dev.ProfilePath.Substring(37);
+            if (dev.ProfileFile != null)
             {
-                var uploadFile = await Helper.UploadImageLocally(dev.ProfileFile, _webHostEnvironment, "ImageProfiles" , _httpContextAccessor);
-                dev.ProfilePath = uploadFile;
+                var uploadFile = await Helper.UploadImageLocally(dev.ProfileFile, "ImageProfiles" , _httpContextAccessor);
+               dev.ProfilePath = uploadFile;
 
             }
-            await _developerService.UpdateDeveloperAsync(dev);
+            if(await _developerService.UpdateDeveloperAsync(dev) == true)
+            {
+                Helper.DeleteImageLocally(oldProfilePath , "ImageProfiles");
+                return Ok();
+            }
 
-
-            return Ok();
+            return StatusCode(500);
 
         }
     }

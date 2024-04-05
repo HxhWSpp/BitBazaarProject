@@ -53,7 +53,7 @@ namespace AppsApi.Data.Repositories
             return await _dbSet.ToListAsync();
         }
 
-        public async Task<Developer> GetDeveloperDetailsById(int id)
+        public async Task<Developer> GetDeveloperDetailsByIdAsync(int id)
         {
             var entity = await _dbSet.Include(a => a.Apps).SingleOrDefaultAsync(a => a.Id == id);
             if (entity != null)

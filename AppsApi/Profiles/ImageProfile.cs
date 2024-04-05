@@ -9,7 +9,7 @@ namespace AppsApi.Profiles
         public ImageProfile()
         {
             CreateMap<Image, ImageResponseDTO>();
-            CreateMap<ImageRequestDTO, Image>();
+            CreateMap<ImageResponseDTO, Image>();
 
 
             CreateMap<string, Image>().ForMember(dest => dest.ImagePath, opt => opt.MapFrom(src => src))

@@ -5,7 +5,7 @@ namespace AppsApi.Data.Repositories.Abstractions
 {
     public interface IGenreRepository : IRepository<Genre>
     {     
-        Task<Genre> GetGenreDetailsById(int id);
+        Task<Genre> GetGenreDetailsByIdAsync(int id);
 
     }
 }
