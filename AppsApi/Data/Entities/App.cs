@@ -19,5 +19,7 @@ namespace AppsApi.Data.Entities
         public virtual ICollection<Image>? Images { get; set; } = new HashSet<Image>() {};
 
         public virtual ICollection<Review>? Reviews { get; set; }
+
+        //public virtual ICollection<User>? Users { get; set; }
     }
 }

@@ -18,6 +18,7 @@ using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 using Microsoft.OpenApi.Writers;
 using AppsApi.Utils;
 using AutoMapper.Configuration.Annotations;
+using Microsoft.AspNetCore.Authorization;
 
 namespace AppsApi.Controllers
 {
@@ -36,6 +37,7 @@ namespace AppsApi.Controllers
 
         // GET: api/Apps
         [HttpGet]
+        [Authorize]
         public async Task<ActionResult<IEnumerable<AppResponseDTO>>> GetApps()
         {
             return (await _appService.GetAppsAsync()).ToList();

@@ -8,6 +8,8 @@ namespace AppsApi.Data.Entities
         public string Description { get; set; }
         public bool Recommended { get; set; }
 
+        public virtual User? User { get; set; }
+
         public virtual App? App { get; set; }
     }
 }
