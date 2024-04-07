@@ -48,7 +48,7 @@ namespace AppsApi.Controllers
         [HttpPost("Register")]
         public async Task<ActionResult> Register([FromForm]UserRegisterDTO userModel)
         {
-            var ProfilePath = await Helper.UploadImageLocally(userModel.ProfileFile, "ImageProfile" , _httpContextAccessor);
+            var ProfilePath = await Helper.UploadImageLocally(userModel.ProfileFile, "ImageProfiles" , _httpContextAccessor);
             var user = new User()
             {
                 Email = userModel.Email,
