@@ -1,0 +1,13 @@
+<p>genres works!</p>
+<div *ngFor="let genre of genres">
+    <a href = "genres/details/{{genre.id}}">
+        {{genre.name}}
+    </a>
+    --
+    <a href = "genres/delete/{{genre.id}}">Delete</a>
+    
+</div>
+<div>--------------------------------------------</div>
+
+<a href = "genres/add">Add Genre</a>
+

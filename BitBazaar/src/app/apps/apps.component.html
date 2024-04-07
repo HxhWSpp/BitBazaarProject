@@ -1,0 +1,25 @@
+
+<div class="appdetails">
+    <div *ngFor="let app of apps">
+        <a href = "apps/details/{{app.id}}">
+            {{app.title}}        
+        </a>
+        <p>{{app.description}}</p>
+        <p>{{app.price}}</p>
+        <p>{{app.releaseDate}}</p>
+        <div>
+            <img src={{app.titleCardPath}} alt="">
+        </div>
+        --
+        <a href = "apps/delete/{{app.id}}">Delete</a>
+        --
+        <a href = "apps/edit/{{app.id}}">Edit</a>
+        
+    </div>
+    <div>--------------------------------------------</div>
+    
+    <a href = "apps/add">Add App</a>
+    
+</div>
+   
+

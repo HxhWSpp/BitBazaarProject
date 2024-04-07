@@ -1,0 +1,16 @@
+
+
+    <p>genres-details works!</p>
+    <h1>{{genre?.id}}</h1>
+    <h1>{{genre?.name}}</h1>
+
+    <ul>
+        <li *ngFor="let app of genre?.apps">
+        {{ app.title }}
+        {{ app.price }}
+        {{app.description}}
+        <img src={{app.titleCardPath}}>
+        </li>
+    </ul>
+
+

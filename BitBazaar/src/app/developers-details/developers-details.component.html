@@ -1,0 +1,13 @@
+<p>developers-details works!</p>
+<h1>{{developer?.name}}</h1>
+<h1>{{developer?.description}}</h1>
+
+
+<ul>
+    <li *ngFor="let app of developer?.apps">
+        {{app.title}}
+        {{app.description}}
+        {{app.releaseDate}}
+        <img src="{{app.titleCardPath}}" alt="idk">
+    </li>
+</ul>

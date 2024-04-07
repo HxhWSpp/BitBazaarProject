@@ -1,0 +1,27 @@
+<div class="container">
+<h1>{{app?.title}}</h1>
+<h1>{{app?.description}}</h1>
+<h1>{{app?.price}}</h1>
+<h1>{{app?.releaseDate}}</h1>
+<img src={{app?.titleCardPath}} alt="">
+
+<ul>
+    <li *ngFor="let genre of app?.genres">
+    {{ genre.name }}
+    {{genre.id}}   
+    </li>
+</ul>
+
+<ul>
+    <li *ngFor="let image of app?.images">
+        <img src={{image.imagePath}} alt="">
+</ul>
+
+<a href = "developers/details/{{app?.developer?.id}}">{{app?.developer?.name}}</a>
+
+
+
+<div>---------------------------------------------------------</div>
+<a href = "apps/delete/{{app?.id}}">Delete App</a>
+
+</div>

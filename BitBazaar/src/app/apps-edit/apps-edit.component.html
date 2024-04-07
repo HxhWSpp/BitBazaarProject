@@ -1,0 +1,59 @@
+<p>apps-edit works!</p>
+<form (ngSubmit)="onSubmit()">
+    <label for="title">Title</label>
+    <input type="text" id="title" [(ngModel)]="app.title" name="title" required>
+    <p>{{appEdit.title}}</p>
+    <p>{{app.title}}</p>
+    
+
+    <label for="description">Description</label>
+    <input type="text" id="description" [(ngModel)]="app.description" name="description" required>
+  
+    <label for="price">Price</label>
+    <input type="number" id="price" [(ngModel)]="app.price" name="price" required>
+
+    <label for="developerId">devId</label>
+    <input type="number" id="developerId" [(ngModel)]="appEdit.developerId" name="developerId" required>
+  
+    <label for="releaseDate">Release Date</label>
+    <input type="date" id="releaseDate" [(ngModel)]="app.releaseDate" name="releaseDate" required>
+    <p>{{app.releaseDate}}</p>
+   
+    
+    <label for="selectedGenresIdsToRemove">GenresToRemove</label>
+    <mat-form-field>
+        <mat-label>Genres</mat-label>
+        <mat-select [formControl]="selectedGenreIdsToRemove" multiple>
+          @for (genre of app.genres; track genre) {
+            <mat-option [value]="genre.id">{{genre.name}}</mat-option>
+          }
+        </mat-select>
+    </mat-form-field>
+
+    <label for="selectedGenreIdsToAdd">GenresToAdd</label>
+    <mat-form-field>
+        <mat-label>Genres</mat-label>
+        <mat-select [formControl]="selectedGenreIdsToAdd" multiple>
+          @for (genre of genres; track genre) {
+            <mat-option [value]="genre.id">{{genre.name}}</mat-option>
+          }
+        </mat-select>
+    </mat-form-field>
+
+    <label for="titleCardFile">Title Card File</label>
+    <input type="file" (change)="onTitleCardChange($event)" id="titleCardFile" name="titleCardFile" required>
+
+    <label for="imagesToAdd">imageFiles</label>
+    <input type="file" (change)="onImageFilesChange($event)" id="imagesToAdd" name="imagesToAdd" multiple required>
+
+    <div>-------------------------------------------------------------------------</div>
+
+    <ul>
+        <li *ngFor="let image of app?.images">
+            
+            <input type="checkbox" [checked]="selectedImageIdsToRemove.value.includes(image.id)" (change)="toggleNumberSelection(image.id)">
+            <img src={{image.imagePath}} alt="">
+    </ul>
+       
+    <button type="submit">Submit</button>
+  </form>
