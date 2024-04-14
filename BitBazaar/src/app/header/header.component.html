@@ -1,0 +1,27 @@
+   <mat-toolbar class="nav-bar">  
+      <a href="/apps" id="title">{{title}}</a>
+      <span class="example-spacer"></span>
+      <a mat-flat-button id="href" href="/developers">Developers</a>
+      <span class="example-spacer"></span>
+      <a mat-flat-button id="href" href="/genres">Genres</a>
+      <span class="example-spacer"></span>
+      
+      <ng-container *ngIf=" isLoggedIn ; else login">
+       
+          <img (click)="viewProfile()" src="{{user?.profilePicture}}">          
+     
+        
+        <span id="userName" mat-button [matMenuTriggerFor]="menu">{{user?.userName}}</span>
+        <span id="wallet">${{user?.wallet}}</span>
+        <mat-menu #menu="matMenu" id="menu">
+          <a mat-menu-item href="/users/details/{{userId}}" id="view">View</a>
+          <a mat-menu-item href="/wallet" id="walletButton">Add to wallet</a>
+          <button mat-menu-item (click)="logOut()" id="logOut">LogOut</button>             
+        </mat-menu>
+      </ng-container>
+      <ng-template #login>
+        <a id="login" mat-stroked-button href="/login">LogIn</a>  
+      </ng-template>
+  </mat-toolbar>
+
+

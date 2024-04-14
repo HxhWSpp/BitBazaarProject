@@ -1,0 +1,33 @@
+#container {
+    margin-top: 20%;
+    max-width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+#label{
+    display: block;
+    color: #EEEEEE;
+    font-size: xx-large;
+    margin-bottom: 5%;
+}
+
+#button{
+    display: block;
+    color: #EEEEEE;
+    background-color: darkgreen;
+    transition: transform 1s ease;
+}
+
+#button:hover{
+    transform: scale(1.1);
+}
+
+
+.example-right-align {
+    text-align: right;
+  }
+input.example-right-align::-webkit-outer-spin-button,
+input.example-right-align::-webkit-inner-spin-button {
+  display: none;
+}

@@ -1,0 +1,14 @@
+<div id="container">
+    <form (ngSubmit)="AddFunds()">
+        <label for="ammount" id="label">Ammount To Add</label>
+        <mat-form-field>
+          <mat-label>Ammount to Add</mat-label>
+          <input matInput type="number" [(ngModel)]="ammount" class="example-right-align" name="ammount">
+          <span matTextPrefix>$&nbsp;</span>
+          <span matTextSuffix>.00</span>
+        </mat-form-field>
+        <button mat-flat-button type="submit" id="button">Add</button>
+    </form>
+</div>
+   
+

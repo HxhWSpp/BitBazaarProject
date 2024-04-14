@@ -1,16 +1,17 @@
 
+<div id="genreC">
+    <h1 id="genre">{{genre?.name}}</h1>
+</div>
+<div class="apps">
+    <div *ngFor="let app of genre?.apps" id="app">
+       <div id="i" (click)="Details(app.id)">                 
+           <img src="{{app.titleCardPath}}">
+       </div>                   
+       <h1 id="price" (click)="Details(app.id)">{{app.price}}$</h1>
+       
+    </div>         
+</div>
 
-    <p>genres-details works!</p>
-    <h1>{{genre?.id}}</h1>
-    <h1>{{genre?.name}}</h1>
 
-    <ul>
-        <li *ngFor="let app of genre?.apps">
-        {{ app.title }}
-        {{ app.price }}
-        {{app.description}}
-        <img src={{app.titleCardPath}}>
-        </li>
-    </ul>
 
 

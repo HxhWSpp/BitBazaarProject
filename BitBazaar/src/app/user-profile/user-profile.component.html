@@ -1,0 +1,43 @@
+<div id="container">
+    <div id="grid">
+        <div class="userInfo">
+            <img id="profile" src="{{ user?.profilePicture}}" alt="">
+            <div>
+                <h1>{{user?.userName}}</h1>
+                <p>{{user?.description}}</p>
+            </div>
+            
+
+        </div>
+        <div style="border-bottom: solid #76ABAE;">
+            
+        </div>
+    </div>
+    <div style="border-bottom: solid #76ABAE;">
+        <h1 id="lib">Library:</h1>
+        <div class="apps">  
+           
+            <div *ngFor="let app of user?.appsLibrary" id="app">
+               <div id="i" (click)="Details(app.id)">                 
+                   <img src="{{app.titleCardPath}}">
+               </div>                   
+               <h1 id="price" (click)="Details(app.id)"></h1>              
+            </div>         
+       </div>
+    </div>
+    <div>
+        <h1 id="lib">Wishlist:</h1>
+        <div class="apps">  
+           
+            <div *ngFor="let app of user?.appsWishlist" id="app">
+               <div id="i" (click)="Details(app.id)">                 
+                   <img src="{{app.titleCardPath}}">
+               </div>                   
+               <h1 id="price" (click)="Details(app.id)"></h1>              
+            </div>         
+       </div>
+    </div>
+    
+        
+   
+</div>

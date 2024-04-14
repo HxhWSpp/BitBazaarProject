@@ -1,13 +1,8 @@
-<p>genres works!</p>
-<div *ngFor="let genre of genres">
-    <a href = "genres/details/{{genre.id}}">
-        {{genre.name}}
-    </a>
-    --
-    <a href = "genres/delete/{{genre.id}}">Delete</a>
-    
+
+<div id="container">
+          
+        <mat-card *ngFor="let genre of genres" (click)="Details(genre.id)" id="genre">
+            <mat-card-content>{{genre.name}}</mat-card-content>
+        </mat-card>         
+
 </div>
-<div>--------------------------------------------</div>
-
-<a href = "genres/add">Add Genre</a>
-

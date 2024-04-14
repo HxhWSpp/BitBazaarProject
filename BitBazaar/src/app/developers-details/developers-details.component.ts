@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
 import { DeveloperDetailModel } from '../models/detail-models/developer-detail.model';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { DeveloperService } from '../services/developer.service';
 import { CommonModule } from '@angular/common';
+import { AppService } from '../services/app.service';
 
 @Component({
   selector: 'app-developers-details',
@@ -15,7 +16,7 @@ export class DevelopersDetailsComponent {
   id : number | null = 0;
   developer : DeveloperDetailModel | undefined;
 
-  constructor(private route: ActivatedRoute,private developerService: DeveloperService) { }
+  constructor(private route: ActivatedRoute,private developerService: DeveloperService , private router: Router) { }
 
   ngOnInit() {
     this.route.params.subscribe(params => {
@@ -29,5 +30,9 @@ export class DevelopersDetailsComponent {
     this.developerService.getDeveloperById(id).subscribe(developer => this.developer = developer)
     
   }  
+
+  Details(id:number){
+    this.router.navigate([`apps/details/${id}`])
+  }
   
 }

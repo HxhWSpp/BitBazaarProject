@@ -1,0 +1,66 @@
+.apps{    
+    width: 70%;
+    height: 1000px;
+    margin-top: 20%;
+    margin-left: auto;
+    margin-right: auto;
+    gap: 5%;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+}
+
+#app{
+    border-style: solid;
+    border-color: #76ABAE;
+    background-color: #222831;
+
+    width: 240;
+    height: 400;
+    
+}
+
+#app:hover{  
+    text-shadow:0 0 10px #76ABAE,
+                0 0 20px #76ABAE,
+                0 0 40px #76ABAE,
+                0 0 80px #76ABAE;
+    
+
+}
+
+
+#images{
+    width: 10%;
+    height: 10%;
+}
+
+#i{
+    
+    width: 100%;
+    height: 90%;
+    overflow: hidden;
+}
+
+#i img{   
+        object-fit: cover;
+            height: 100%;
+            width: 100%; 
+}
+
+#price{
+    margin: 0;
+    color:  #76ABAE;
+    border-top: solid #76ABAE;
+    text-align: center;
+}
+
+#genreC{
+    margin-top: 20%;
+}
+
+#genre{
+    color: #eeee;
+    margin-left: 20%;
+    font-size: xx-large;
+}
+

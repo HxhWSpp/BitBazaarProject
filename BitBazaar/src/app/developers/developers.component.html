@@ -1,12 +1,9 @@
-<p>developers works!</p>
-<div *ngFor="let developer of developers">
-    <a href = "developers/details/{{developer.id}}">
-        {{developer.name}}
-    </a>
-    --
-    <a href = "developers/delete/{{developer.id}}">Delete</a>
-    
+<div class="apps">
+    <div *ngFor="let app of developers" id="app">
+       <div id="i" (click)="Details(app.id)">                 
+           <img src="{{app.profilePath}}">
+       </div>                   
+       <h1 id="price" (click)="Details(app.id)">{{app.name}}</h1>
+       
+    </div>         
 </div>
-<div>--------------------------------------------</div>
-
-<a href = "developers/add">Add Developers</a>

@@ -1,5 +1,5 @@
 import { Component} from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { GenreService } from '../services/genre.service';
 import { GenreDetailModel } from '../models/detail-models/genre-detail.model';
 import { CommonModule } from '@angular/common';
@@ -16,7 +16,7 @@ export class GenresDetailsComponent{
   id : number | null = 0;
   genre : GenreDetailModel | undefined;
   
-  constructor(private route: ActivatedRoute,private genreService: GenreService) { }
+  constructor(private route: ActivatedRoute,private genreService: GenreService , private router: Router) { }
 
   ngOnInit() {
     this.route.params.subscribe(params => {
@@ -28,4 +28,8 @@ export class GenresDetailsComponent{
   getGenreDetails(id :number): void {
     this.genreService.getGenreDetails(id).subscribe(genre => this.genre = genre)
   }  
+
+  Details(id:number){
+    this.router.navigate([`apps/details/${id}`])
+  }
 }

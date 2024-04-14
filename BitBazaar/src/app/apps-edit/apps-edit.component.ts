@@ -36,6 +36,7 @@ export class AppsEditComponent {
     releaseDate: new Date,
     genres: [],
     images: [],
+    reviews: []
     
   }
 

@@ -1,0 +1,98 @@
+#container{
+    margin-top: 20%;
+
+}
+
+#grid{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+.userInfo{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    border-bottom: solid #76ABAE;
+}
+#profile{
+    height: 70%;
+    max-width: 50%;
+    margin-right: 1%;
+    border-style: solid;
+    border-radius: 10%;
+    border-color: #76ABAE;
+    cursor: pointer;
+    margin-left: 50%;
+}
+
+h1{
+    font-size: xx-large;
+    color: #EEEEEE;
+}
+
+.apps{    
+    width: 70%;
+    height: 100%;
+
+    margin-left: auto;
+    margin-right: auto;
+    gap: 5%;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+}
+
+#app{
+    border-style: solid;
+    border-color: #76ABAE;
+    background-color: #222831;
+
+    width: 100%;
+    height: 100%;
+    
+}
+
+#app:hover{  
+    text-shadow:0 0 10px #76ABAE,
+                0 0 20px #76ABAE,
+                0 0 40px #76ABAE,
+                0 0 80px #76ABAE;
+    
+
+}
+
+
+#images{
+    width: 10%;
+    height: 10%;
+}
+
+#i{
+    
+    width: 100%;
+    height: 90%;
+    overflow: hidden;
+}
+
+#i img{   
+        object-fit: cover;
+            height: 100%;
+            width: 100%; 
+}
+
+#price{
+    margin: 0;
+    color:  #76ABAE;
+    border-top: solid #76ABAE;
+    text-align: center;
+}
+
+#lib{
+    font-size: xx-large;
+    color: #76ABAE;
+    margin-top: 5%;
+    margin-left: 15%;
+    margin-bottom: 2%;
+    letter-spacing: 230px;
+    
+    
+
+}

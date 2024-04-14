@@ -1,13 +1,13 @@
-<p>developers-details works!</p>
-<h1>{{developer?.name}}</h1>
-<h1>{{developer?.description}}</h1>
-
-
-<ul>
-    <li *ngFor="let app of developer?.apps">
-        {{app.title}}
-        {{app.description}}
-        {{app.releaseDate}}
-        <img src="{{app.titleCardPath}}" alt="idk">
-    </li>
-</ul>
+<div id="genreC">
+    <h1 id="genre">{{developer?.name}}</h1>
+    <p>{{developer?.description}}</p>
+</div>
+<div class="apps">
+    <div *ngFor="let app of developer?.apps" id="app">
+       <div id="i" (click)="Details(app.id)">                 
+           <img src="{{app.titleCardPath}}">
+       </div>                   
+       <h1 id="price" (click)="Details(app.id)">{{app.price}}$</h1>
+       
+    </div>         
+</div>

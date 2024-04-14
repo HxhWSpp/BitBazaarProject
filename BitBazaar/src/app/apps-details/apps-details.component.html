@@ -1,27 +1,87 @@
+<h1>{{app.title}}</h1>
 <div class="container">
-<h1>{{app?.title}}</h1>
-<h1>{{app?.description}}</h1>
-<h1>{{app?.price}}</h1>
-<h1>{{app?.releaseDate}}</h1>
-<img src={{app?.titleCardPath}} alt="">
-
-<ul>
-    <li *ngFor="let genre of app?.genres">
-    {{ genre.name }}
-    {{genre.id}}   
-    </li>
-</ul>
-
-<ul>
-    <li *ngFor="let image of app?.images">
-        <img src={{image.imagePath}} alt="">
-</ul>
-
-<a href = "developers/details/{{app?.developer?.id}}">{{app?.developer?.name}}</a>
-
-
-
-<div>---------------------------------------------------------</div>
-<a href = "apps/delete/{{app?.id}}">Delete App</a>
-
+        <div class="infoContainer">
+            <div class="sliders">
+                <ng-container *ngFor="let img of app.images; let i = index">
+                    <div class="slider" *ngIf="current == i">
+                        <img class="img" [src]="img.imagePath">
+                    </div>
+                </ng-container>
+            </div>
+            <div>
+                <button mat-flat-button *ngIf="isInWishList" (click)="RemoveFromWishList(app.id)">Add {{app.title}} To Wishlist</button>
+                <button mat-flat-button *ngIf="!isInWishList" (click)="AddToWishList(app.id)">Add {{app.title}} To Wishlist</button>
+                <button mat-flat-button *ngIf="!disableBuy" (click)="Buy(app.id)">Buy {{app.price}}</button>
+                <button mat-flat-button *ngIf="disableBuy" (click)="Buy(app.id)" disabled="">Buy {{app.price}}</button>
+                <div id="re">
+                    <button mat-flat-button data-bs-toggle="modal" data-bs-target="#exampleModal">Write a review for {{app.title}}</button>
+                </div>
+            </div>
+        
+        </div>
+        
+            <div id="info">
+           
+                <img src="{{ app.titleCardPath }}" alt="">
+                <p id="description">{{app.description}}</p>
+                <p id="releaseDate">Release Date: {{app.releaseDate}}</p>
+                <div id="genres">
+                    <p id="gLabel">Genres: </p>
+                    <a class="genreButton" *ngFor="let genre of app.genres" href="/genres/details/{{genre.id}}">{{genre.name}}</a>
+                </div>
+                <div id="dev">
+                    <a class="genreButton" href="/developers/details/{{app.developer?.id}}">Developer: {{app.developer?.name}}</a>
+                </div>
+                
+            </div>                                  
 </div>
+<div id="reviews">
+    <div *ngFor="let review of app.reviews" id="reviewC">
+        <div id="review">
+            <h1 id="rtitle">{{review.title}}</h1>
+            <p id="rdes">{{review.description}}</p>
+        </div>
+        <div>
+            <div id="icon" *ngIf="review.recommended">
+                <mat-icon svgIcon="thumbs-up" aria-hidden="false" aria-label="Example thumbs up SVG icon"></mat-icon>
+            </div>
+            <div id="icon" *ngIf="!review.recommended">
+                <mat-icon svgIcon="thumbs-down" aria-hidden="false" aria-label="Example thumbs up SVG icon"></mat-icon>
+            </div>
+           
+        </div>
+    </div>
+</div>
+
+
+
+
+
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" style="color: #31363F;">
+    <div class="modal-dialog" style="background-color: #31363F;">
+      <div class="modal-content" style="background-color: #31363F;">
+        <div class="modal-header" style="background-color: #31363F;">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Write a Review</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body" style="background-color: #31363F; border: none;">
+            <form class="example-form" (ngSubmit)="CreateReview(app.id)">
+                <mat-form-field>
+                    <mat-label>Title</mat-label>
+                    <input matInput [(ngModel)]="review.title" name="title" required>
+                </mat-form-field>
+                <mat-form-field>
+                    <mat-label>Description</mat-label>
+                    <input matInput [(ngModel)]="review.description" name="description" required>
+                </mat-form-field>
+                <mat-checkbox class="example-margin" [(ngModel)]="review.recommended" name="recommended">Recommended</mat-checkbox>
+                <button type="submit" class="btn btn-primary">Save changes</button>
+            </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+

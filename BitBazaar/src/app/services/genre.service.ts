@@ -33,7 +33,7 @@ export class GenreService {
 
     //GET
     getGenreDetails(id: number): Observable<GenreDetailModel> {
-        const url = `${this.apiUrl}/GetAppsByGenre/${id}`;
+        const url = `${this.apiUrl}/GetGenreDetails/${id}`;
         return this.http.get<GenreDetailModel>(url);    
       }
   
@@ -49,18 +49,5 @@ export class GenreService {
       return this.http.delete<GenreModel>(url);
     }
 
-    private mapApiResponseToGenre(apiResponse: any): GenreDetailModel {
-        return {
-          id: apiResponse.id,
-          name: apiResponse.name,
-          apps: apiResponse.apps.map((app :AppModel) => ({
-            id: app.id,
-            title: app.title,
-            description: app.description,
-            price: app.price,
-            titleCardPath: app.titleCardPath,
-            releaseDate: app.releaseDate
-          }))
-        };
-    }
+    
 }
