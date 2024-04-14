@@ -102,24 +102,13 @@ export class AppsDetailsComponent {
     slidesToScroll: 1
   };
   ngOnInit() {
-    this.sub = this.reloader.reloadComponent.subscribe(() => {
-      this.userSerivce.GetById(this.userSerivce.getUserIdFromToken()).subscribe(user => {
-        if(!user.appsLibrary.some(a => a.id == this.app.id)){           
-           this.disableBuy = true
-        }
-        if(user.appsWishlist.some(a => a.id == this.app.id)){
-          this.isInWishList = true;
-        }
-      });
-    });
+    
     this.route.params.subscribe(params => {
       this.id = +params['id'];
       this.getAppDetails(this.id);
       
       this.userSerivce.GetById(this.userSerivce.getUserIdFromToken()).subscribe(user => {
-        if(!user.appsLibrary.some(a => a.id == this.app.id)){           
-           this.disableBuy = true
-        }
+        
       });
       this.app.releaseDate.toDateString();
       setInterval(() => {
