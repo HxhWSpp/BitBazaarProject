@@ -2,7 +2,7 @@
 using AppsApi.Data.Repositories.Abstractions;
 using AppsApi.DTOs.AppDTOs;
 using AppsApi.DTOs.GenreDTOs;
-
+using AppsApi.DTOs.Paginaton;
 using AppsApi.Services.Abstractions;
 using AppsApi.Utils;
 using AutoMapper;
@@ -90,9 +90,9 @@ namespace AppsApi.Services
             return _mapper.Map<AppDetailResponseDTO>(appEntity);
         }
 
-        public async Task<ICollection<AppResponseDTO>> GetAppsAsync()
+        public async Task<ICollection<AppResponseDTO>> GetAppsAsync(PaginationQuery paginationQuery)
         {
-            var appList = (await _appRepository.GetAllAsync()).ToList();
+            var appList = (await _appRepository.GetAllAsync(paginationQuery)).ToList();
             return _mapper.Map<ICollection<AppResponseDTO>>(appList);
         }
       

@@ -20,6 +20,7 @@ namespace AppsApi.Data.Entities
 
         public virtual ICollection<Review>? Reviews { get; set; }
 
-        //public virtual ICollection<User>? Users { get; set; }
+        public virtual ICollection<User>? UsersLibrary { get; set; }
+        public virtual ICollection<User>? UsersWishlist { get; set; }
     }
 }

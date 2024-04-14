@@ -1,5 +1,6 @@
 ﻿using AppsApi.Data.Entities;
 using AppsApi.Data.Repositories.Abstractions;
+using AppsApi.DTOs.Paginaton;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq.Expressions;
@@ -51,9 +52,14 @@ namespace AppsApi.Data.Repositories
             }
         }
 
-        public async Task<ICollection<App>> GetAllAsync()
+        public async Task<ICollection<App>> GetAllAsync(PaginationQuery paginationQuery)
         {
-            return await _dbSet.Include(i => i.Images).ToListAsync();
+            if (paginationQuery == null)
+            {
+                return await _dbSet.Include(i => i.Images).ToListAsync();
+            }
+            var skip = (paginationQuery.PageNumber - 1) * paginationQuery.PageSize;
+            return await _dbSet.Include(i => i.Images).Skip(skip).Take(paginationQuery.PageSize).ToListAsync();
         }
 
         public async Task<App> GetAppDetailsByIdAsync(int id)

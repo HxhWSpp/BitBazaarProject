@@ -55,7 +55,7 @@ namespace AppsApi.Services
 
         public async Task<ICollection<DeveloperDetailResponseDTO>> GetDevelopersAsync()
         {
-            var devList = (await _developerRepository.GetAllAsync()).ToList();
+            var devList = (await _developerRepository.GetAllAsync(null)).ToList();
             return _mapper.Map<ICollection<DeveloperDetailResponseDTO>>(devList);
         }
 

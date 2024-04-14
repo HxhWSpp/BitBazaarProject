@@ -19,6 +19,12 @@ using Microsoft.OpenApi.Writers;
 using AppsApi.Utils;
 using AutoMapper.Configuration.Annotations;
 using Microsoft.AspNetCore.Authorization;
+using System.IdentityModel.Tokens.Jwt;
+using System.Drawing;
+using Microsoft.IdentityModel.Tokens;
+using System.Security.Claims;
+using System.Data;
+using AppsApi.DTOs.Paginaton;
 
 namespace AppsApi.Controllers
 {
@@ -38,9 +44,9 @@ namespace AppsApi.Controllers
         // GET: api/Apps
         [HttpGet]
         [Authorize]
-        public async Task<ActionResult<IEnumerable<AppResponseDTO>>> GetApps()
-        {
-            return (await _appService.GetAppsAsync()).ToList();
+        public async Task<ActionResult<IEnumerable<AppResponseDTO>>> GetApps([FromQuery] PaginationQuery paginationQuery)
+        {            
+            return (await _appService.GetAppsAsync(paginationQuery)).ToList();
         }
        
 

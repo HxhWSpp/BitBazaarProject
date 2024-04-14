@@ -9,5 +9,6 @@ namespace AppsApi.DTOs.ReviewDTOs
         public bool Recommended { get; set; }
 
         public int AppId { get; set; }
+        public string? UserId { get; set; }
     }
 }

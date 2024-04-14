@@ -51,7 +51,7 @@ namespace AppsApi.Services
 
         public async Task<ICollection<GenreResponseDTO>> GetGenresAsync()
         {
-            var genreList = (await _genreRepository.GetAllAsync()).ToList();
+            var genreList = (await _genreRepository.GetAllAsync(null)).ToList();
             return _mapper.Map<ICollection<GenreResponseDTO>>(genreList);
         }
 

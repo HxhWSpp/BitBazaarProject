@@ -17,6 +17,7 @@ namespace AppsApi.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<App>().HasMany(a => a.Genres).WithMany(g => g.Apps).UsingEntity(j => j.ToTable("AppGenre"));
 
             modelBuilder.Entity<App>().HasMany(a => a.Images).WithOne(i => i.App).OnDelete(DeleteBehavior.Cascade);
@@ -24,14 +25,18 @@ namespace AppsApi.Data
             modelBuilder.Entity<App>().HasOne(a => a.Developer).WithMany(a => a.Apps).OnDelete(DeleteBehavior.Cascade);
             modelBuilder.Entity<App>().HasMany(a => a.Reviews).WithOne(a => a.App).OnDelete(DeleteBehavior.Cascade);
 
-            //modelBuilder.Entity<User>().HasMany(u => u.Library).WithMany(a => a.Users).UsingEntity(j => j.ToTable("UserLibrary"));
-            //modelBuilder.Entity<User>().HasMany(u => u.Wishlist).WithMany(a => a.Users).UsingEntity(j => j.ToTable("UserWishlist"));
-            //modelBuilder.Entity<User>().HasMany(a => a.Reviews).WithOne(u => u.User).OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<User>().HasMany(u => u.AppsLibrary).WithMany(a => a.UsersLibrary).UsingEntity(j => j.ToTable("UserLibrary"));
+            modelBuilder.Entity<User>().HasMany(u => u.AppsWishlist).WithMany(a => a.UsersWishlist).UsingEntity(j => j.ToTable("UserWishlist"));
+            modelBuilder.Entity<User>().HasMany(a => a.Reviews).WithOne(u => u.User).OnDelete(DeleteBehavior.Cascade);
 
-
-            base.OnModelCreating(modelBuilder);
+            
+            modelBuilder.Entity<User>().Navigation(l => l.AppsLibrary).AutoInclude();
+            modelBuilder.Entity<User>().Navigation(l => l.AppsWishlist).AutoInclude();
+            modelBuilder.Entity<User>().Navigation(l => l.Reviews).AutoInclude();
 
             modelBuilder.Seed();
+            
+           
 
         }
         public DbSet<Genre> Genres { get; set; }

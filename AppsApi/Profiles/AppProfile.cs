@@ -13,8 +13,9 @@ namespace AppsApi.Profiles
            
             CreateMap<AppCreateDTO, App>();
 
-            CreateMap<App, AppDetailResponseDTO>(); 
+            CreateMap<App, AppDetailResponseDTO>();
 
+            CreateMap<AppDetailResponseDTO, App>();
         }
     }
 }

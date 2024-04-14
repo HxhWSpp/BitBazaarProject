@@ -1,5 +1,12 @@
-﻿using Microsoft.AspNetCore.Hosting;
+﻿using AppsApi.Data.Entities;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Primitives;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
 using System.Net;
+using System.Security.Claims;
+using System.Text;
 
 namespace AppsApi.Utils
 {
@@ -113,6 +120,58 @@ namespace AppsApi.Utils
             return true;
             
         }
-       
+
+
+
+        public static async Task<List<Claim>> GetClaims(User user , UserManager<User> _userManager)
+        {
+            var claims = new List<Claim>()
+            {
+                new Claim(ClaimTypes.Name, user.UserName),
+                new Claim(ClaimTypes.Sid , user.Id),
+                new Claim(ClaimTypes.Uri , user.ProfilePicture)
+            };
+
+            var roles = await _userManager.GetRolesAsync(user);
+            foreach (var role in roles)
+            {
+                claims.Add(new Claim(ClaimTypes.Role, role));
+                
+            }
+            return claims;
+        }
+
+        public static SigningCredentials GetSigningCredentials(IConfigurationSection _jwtSettings)
+        {
+            var key = Encoding.UTF8.GetBytes(_jwtSettings.GetSection("securityKey").Value);
+            var secret = new SymmetricSecurityKey(key);
+            return new SigningCredentials(secret, SecurityAlgorithms.HmacSha256);
+        }
+
+        public static JwtSecurityToken GenerateTokenOptions(SigningCredentials signingCredentials, List<Claim> claims , IConfigurationSection _jwtSettings)
+        {
+            var tokenOptions = new JwtSecurityToken(
+                issuer: _jwtSettings.GetSection("validIssuer").Value,
+                claims: claims,
+                expires: DateTime.Now.AddMinutes(Convert.ToDouble(_jwtSettings.GetSection("expiryInMinutes").Value)),
+                signingCredentials: signingCredentials
+                );
+            return tokenOptions;
+        }
+
+
+        public static async Task<string> GetUserIdFromJwtToken(StringValues header)
+        {
+            var token = header.ToString().Replace("Bearer " , "");                      
+            var sid = new JwtSecurityTokenHandler().ReadJwtToken(token).Claims.Where(c => c.Type == ClaimTypes.Sid).FirstOrDefault();
+
+            Console.ForegroundColor = ConsoleColor.Red;
+
+
+            await Console.Out.WriteLineAsync($"{sid.Value}");
+            Console.ResetColor();
+            return sid.Value;
+        }
+
     }
 }

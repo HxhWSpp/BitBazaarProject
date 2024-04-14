@@ -10,6 +10,8 @@ using AppsApi.Data.Entities;
 using AppsApi.Services;
 using AppsApi.Services.Abstractions;
 using AppsApi.DTOs.ReviewDTOs;
+using Microsoft.AspNetCore.Authorization;
+using AppsApi.Utils;
 
 namespace AppsApi.Controllers
 {
@@ -17,17 +19,17 @@ namespace AppsApi.Controllers
     [ApiController]
     public class ReviewsController : ControllerBase
     {
-        
+
         private readonly IReviewService _reviewService;
 
         public ReviewsController(IReviewService reviewService)
-        {           
+        {
             _reviewService = reviewService;
         }
 
         // GET: api/Reviews
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<ReviewResponseDTO>>> GetReview()
+        public async Task<ActionResult<IEnumerable<ReviewResponseDTO>>> GetReviews()
         {
             return (await _reviewService.GetReviewsAsync()).ToList();
         }
@@ -45,12 +47,14 @@ namespace AppsApi.Controllers
 
             return review;
         }
-        
+
         // POST: api/Reviews
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
+        [Authorize]
         public async Task<ActionResult<ReviewResponseDTO>> PostReview(ReviewRequestDTO review)
         {
+            review.UserId = await Helper.GetUserIdFromJwtToken(Request.Headers.Authorization);
             await _reviewService.AddReviewAsync(review);
             return CreatedAtAction("GetReview", new { id = review.Id }, review);
         }

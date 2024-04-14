@@ -6,6 +6,7 @@ using AppsApi.DTOs.ReviewDTOs;
 using AppsApi.Services.Abstractions;
 using AutoMapper;
 using Humanizer.Localisation;
+using Microsoft.AspNetCore.Identity;
 using System.Xml.Linq;
 
 namespace AppsApi.Services
@@ -13,19 +14,23 @@ namespace AppsApi.Services
     public class ReviewService : IReviewService
     {
         private readonly IReviewRepository _reviewRepository;
+        private readonly UserManager<User> _userManager;
         private readonly IAppRepository _appRepository;
         private readonly IMapper _mapper;
-        public ReviewService(IReviewRepository reviewRepository , IMapper mapper , IAppRepository appRepository)
+        public ReviewService(IReviewRepository reviewRepository , IMapper mapper , IAppRepository appRepository , UserManager<User> userManager)
         {
             _reviewRepository = reviewRepository;
             _appRepository = appRepository;
+            _userManager = userManager;
             _mapper = mapper;
         }
         public async Task<bool> AddReviewAsync(ReviewRequestDTO review)
         {
             var reviewEntity = _mapper.Map<Review>(review);
             var appEntity = await _appRepository.GetByIdAsync(review.AppId);
+            var userEntity = await _userManager.FindByIdAsync(review.UserId);
             reviewEntity.App = appEntity;
+            reviewEntity.User = userEntity;
 
            return await _reviewRepository.AddAsync(reviewEntity);
         }
@@ -49,7 +54,7 @@ namespace AppsApi.Services
 
         public async Task<ICollection<ReviewResponseDTO>> GetReviewsAsync()
         {
-            var reviewList = (await _reviewRepository.GetAllAsync()).ToList();
+            var reviewList = (await _reviewRepository.GetAllAsync(null)).ToList();
             return _mapper.Map<ICollection<ReviewResponseDTO>>(reviewList);
         }
 
